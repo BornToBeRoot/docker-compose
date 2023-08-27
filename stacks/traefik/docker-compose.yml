@@ -67,7 +67,7 @@ services:
     ports:
       - "80:80/tcp"
       - "443:443/tcp"
-    # Set DNS provider credentials if needed (depends on provider)
+    # Set DNS provider credentials for Letsencrypt dns challenge if needed (depends on provider)
     ##environment:
     ##  - YOUR_PROVIDER_USERNAME=${LETSENCRYPT_DNS_USERNAME}
     ##  - YOUR_PROVIDER_PASSWORD=${LETSENCRYPT_DNS_PASSWORD}
