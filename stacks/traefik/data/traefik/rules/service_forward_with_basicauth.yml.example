@@ -1,0 +1,28 @@
+# Example configuration to handle incoming requests for "service.borntoberoot.net" via https.
+#
+# It enforces basic authentication with the username "service" and password hash (123456).
+#
+# Incoming requests are directed to a backend server at "192.168.178.100:8080"
+# without passing the original host header.
+
+http:
+  routers:
+    service_borntoberoot_net:
+      entryPoints:
+        - websecure
+      rule: Host(`service.borntoberoot.net`)
+      service: service_borntoberoot_net
+      middlewares: service_borntoberoot_net
+  services:
+    service_borntoberoot_net:
+      loadBalancer:
+        passHostHeader: false
+        servers:
+          - url: "http://192.168.178.100:8080"
+  middlewares:
+    service_borntoberoot_net:
+      basicAuth:
+        users:
+          # Username: service
+          # Password: 123456
+          - "service:$apr1$5jcra9u0$bAFE6MkkTwv6m.UtIUbIe/"
