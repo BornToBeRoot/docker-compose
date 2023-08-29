@@ -1,0 +1,76 @@
+version: "3"
+
+# Pi-hole with cloudflared behind Treafik
+
+# More info at
+# - https://hub.docker.com/r/visibilityspots/cloudflared
+services:
+  cloudflared:
+    image: "visibilityspots/cloudflared:latest"
+    container_name: "cloudflared"
+    restart: always
+    networks:
+      dns_network:
+        ipv4_address: 10.0.0.2
+    environment:
+      UPSTREAM1: ${CLOUDFLARED_DNS_UPSTREAM1}    
+      UPSTREAM2: ${CLOUDFLARED_DNS_UPSTREAM2}
+    dns:
+      # Local is required in docker
+      - 127.0.0.1
+      # Gateway or public dns
+      - ${FALLBACK_DNS_RESOLVER}
+
+# More info at
+# - https://hub.docker.com/r/pihole/pihole/
+# - https://github.com/pi-hole/docker-pi-hole/
+# - https://docs.pi-hole.net/
+  pihole:
+    image: "pihole/pihole:latest"
+    container_name: "pihole"
+    restart: always
+    networks:
+      dns_network:
+        ipv4_address: 10.0.0.3      
+    ports:
+      - "53:53/tcp"
+      - "53:53/udp"
+    environment:
+      ServerIP: ${DOCKER_HOST_IP}
+      TZ: ${PIHOLE_TIMEZONE}
+      WEBPASSWORD: ${PIHOLE_PASSWORD}
+      VIRTUAL_HOST: ${TRAEFIK_URI}
+      VIRTUAL_PORT: '80'      
+      DNSMASQ_LISTENING: 'all'
+      # Connect to cloudflared
+      DNS1: '10.0.0.2#5054'
+      DNS2: 'no'
+    volumes:
+       - "./data/etc/pihole/:/etc/pihole/"
+       - "./data/etc/dnsmasq.d/:/etc/dnsmasq.d/"
+    dns:
+      # Local is required in docker
+      - 127.0.0.1
+      # Gateway or public dns
+      - ${FALLBACK_DNS_RESOLVER}
+    labels:
+      - "traefik.enable=${TRAEFIK_ENABLED}"
+      # 80/tcp redirected to 443/tcp via traefik
+      - "traefik.http.routers.pihole.rule=Host(`${TRAEFIK_URI}`)"
+      - "traefik.http.routers.pihole.entrypoints=websecure"
+      - "traefik.http.routers.pihole.tls.certresolver=${TRAEFIK_TLS_CERT_RESOLVER}"
+      - "traefik.http.routers.pihole.tls=${TRAEFIK_TLS_ENABLED}"
+      - "traefik.http.routers.pihole.service=pihole"
+      - "traefik.http.services.pihole.loadbalancer.server.port=80"
+      # Use traefik proxy network
+      - "traefik.docker.network=traefik_proxy"
+
+networks:
+  dns_network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.0.0.0/29
+  traefik_proxy:
+    external:
+      name: traefik_proxy
