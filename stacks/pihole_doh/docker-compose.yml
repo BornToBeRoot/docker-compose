@@ -31,7 +31,8 @@ services:
     restart: always
     networks:
       dns_network:
-        ipv4_address: 10.0.0.3      
+        ipv4_address: 10.0.0.3
+      traefik_proxy:
     ports:
       - "53:53/tcp"
       - "53:53/udp"
