@@ -1,6 +1,6 @@
 # Traefik
 
-Traefik reverse proxy, load balancer and certificate manager.
+[Traefik][traefik_website] reverse proxy, load balancer and certificate manager.
 
 ## Features
 
@@ -45,5 +45,8 @@ This stack provides the following (configurable) features:
    ```bash
    docker network create --driver=bridge --attachable --internal=false traefik_proxy
    ```
-4. Adjust the environment variables in `.env` to your needs
-5. Start the stack with `docker-compose up -d`
+4. Uncomment the feature sections (marked with ##) you want to use in `docker-compose.yml`
+5. Adjust the environment variables in `.env` to your needs
+6. Start the stack with `docker-compose up -d`
+
+[traefik_website]: https://traefik.io/

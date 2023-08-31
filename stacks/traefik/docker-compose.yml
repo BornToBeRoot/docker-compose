@@ -1,21 +1,14 @@
 version: "3"
 
-# Traefik is a modern HTTP reverse proxy and load balancer made to deploy microservices with ease.
-#
-# This docker-compose file creates a Traefik container with the following features:
-# - HTTP to HTTPS redirect (Port 80/tcp to 443/tcp)
-# - Basic authentication for Traefik dashboard
-# - Middlewares for security headers (HSTS, etc.)
-# - File provider for static routes
-# - Docker provider for dynamic routes
-# - Letsencrypt certificate resolver with http challenge
-# - Letsencrypt certificate resolver with dns challenge
-# - Letsencrypt wildcard certificate (requires dns challenge)
+# Traefik reverse proxy, load balancer and certificate manager.
 #
 # Create a docker network for Traefik (used by other stacks/containers):
-#
 # ~# docker network create --driver=bridge --attachable --internal=false traefik_proxy
 #
+# Uncomment the feature sections (marked with ##) you want to use. You also need to set the 
+# corresponding environment variables in the .env file.
+#
+# See README.md for more information.
 
 services:
   traefik:
@@ -32,42 +25,44 @@ services:
       - "--providers.file.directory=/etc/traefik/rules"
       - "--providers.file.watch=true"
       # Docker provider for dynamic routes
-      - "--providers.docker=${TRAEFIK_DOCKER_ENABLED}"
+      - "--providers.docker=true"
       - "--providers.docker.exposedbydefault=false"
       # Verify connection to backend servers (if https is used in the backend)
-      - "--serversTransport.insecureSkipVerify=${TRAEFIK_INSECURE_SKIP_VERIFY}"
-      # Web entrypoints with redirect to websecure
+      - "--serversTransport.insecureSkipVerify=false"
+      # Web entrypoint
       - "--entrypoints.web.address=:80/tcp"
-      - "--entrypoints.web.http.redirections.entryPoint.to=websecure"
-      - "--entrypoints.web.http.redirections.entryPoint.scheme=https"
-      - "--entrypoints.web.http.redirections.entrypoint.permanent=true"
       # Websecure entrypoint
       - "--entrypoints.websecure.address=:443/tcp"
+      # Redirect http to https
+      ##- "--entrypoints.web.http.redirections.entryPoint.to=websecure"
+      ##- "--entrypoints.web.http.redirections.entryPoint.scheme=https"
+      ##- "--entrypoints.web.http.redirections.entrypoint.permanent=true"      
       # Websecure middleware for HSTS, etc.
       - "--entrypoints.websecure.http.middlewares=secHeaders@file"
       # Letsecnrypt http challenge
-      - "--certificatesresolvers.http.acme.httpchallenge=${LETSENCRYPT_HTTP_ENABLED}"
-      - "--certificatesresolvers.http.acme.httpchallenge.entrypoint=web"
-      - "--certificatesresolvers.http.acme.email=${LETSENCRYPT_HTTP_EMAIL}"
-      - "--certificatesresolvers.http.acme.storage=/letsencrypt/acme_http.json"
+      ##- "--certificatesresolvers.http.acme.httpchallenge=true"
+      ##- "--certificatesresolvers.http.acme.httpchallenge.entrypoint=web"
+      ##- "--certificatesresolvers.http.acme.email=${LETSENCRYPT_EMAIL}"
+      ##- "--certificatesresolvers.http.acme.storage=/letsencrypt/acme_http.json"
       # Letsencrypt dns challenge
-      - "--certificatesresolvers.dns.acme.dnschallenge=${LETSENCRYPT_DNS_ENABLED}"
-      - "--certificatesresolvers.dns.acme.dnschallenge.provider=${LETSENCRYPT_DNS_PROVIDER}"
-      - "--certificatesResolvers.dns.acme.dnschallenge.delaybeforecheck=${LETSENCRYPT_DNS_DELAY}"
-      - "--certificatesresolvers.dns.acme.dnschallenge.resolvers=${LETSENCRYPT_DNS_RESOLVER}"
-      - "--certificatesresolvers.dns.acme.email=${LETSENCRYPT_DNS_EMAIL}"
-      - "--certificatesresolvers.dns.acme.storage=/letsencrypt/acme_dns.json"
+      ##- "--certificatesresolvers.dns.acme.dnschallenge=true"
+      ##- "--certificatesresolvers.dns.acme.dnschallenge.provider=${LETSENCRYPT_DNS_PROVIDER}"
+      ##- "--certificatesResolvers.dns.acme.dnschallenge.delaybeforecheck=${LETSENCRYPT_DNS_DELAY}"
+      ##- "--certificatesresolvers.dns.acme.dnschallenge.resolvers=${LETSENCRYPT_DNS_RESOLVER}"
+      ##- "--certificatesresolvers.dns.acme.email=${LETSENCRYPT_EMAIL}"
+      ##- "--certificatesresolvers.dns.acme.storage=/letsencrypt/acme_dns.json"
       # Letsencrypt wildcard certificate (requires dns challenge)
-      - "--entrypoints.websecure.http.tls=${LETSENCRYPT_WILDCARD_ENABLED}"
-      - "--entrypoints.websecure.http.tls.certResolver=dns"
-      - "--entrypoints.websecure.http.tls.domains[0].main=${LETSENCRYPT_WILDCARD_DOMAIN}"
-      - "--entrypoints.websecure.http.tls.domains[0].sans=*.${LETSENCRYPT_WILDCARD_DOMAIN}"
+      ##- "--entrypoints.websecure.http.tls=true"
+      ##- "--entrypoints.websecure.http.tls.certResolver=dns"
+      ##- "--entrypoints.websecure.http.tls.domains[0].main=${LETSENCRYPT_WILDCARD_DOMAIN}"
+      ##- "--entrypoints.websecure.http.tls.domains[0].sans=*.${LETSENCRYPT_WILDCARD_DOMAIN}"
     networks:
       - "traefik_proxy"
     ports:
       - "80:80/tcp"
       - "443:443/tcp"
     # Set DNS provider credentials for Letsencrypt dns challenge if needed (depends on provider)
+    # See https://docs.traefik.io/https/acme/#providers for more information
     ##environment:
     ##  - YOUR_PROVIDER_USERNAME=${LETSENCRYPT_DNS_USERNAME}
     ##  - YOUR_PROVIDER_PASSWORD=${LETSENCRYPT_DNS_PASSWORD}
@@ -77,22 +72,27 @@ services:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
       - "./data/letsencrypt:/letsencrypt"
       - "./data/traefik/rules:/etc/traefik/rules"
-    # Override default dns settings if needed (e.g. if you host pi-hole on the same machine)
+    # Override default dns settings if needed (e.g. if you host Pi-hole on the same machine)
     ##dns:
     # Local is required in docker
     ##- 127.0.0.1
     # Gateway or public dns
-    ##- 10.8.200.1
+    ##- 192.168.178.1
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.traefik.rule=Host(`${TRAEFIK_URI}`)"
-      - "traefik.http.routers.traefik.entrypoints=websecure"
-      - "traefik.http.routers.traefik.tls.certresolver=dns"
-      - "traefik.http.routers.traefik.tls=true"
+      # HTTP configuration
+      - "traefik.http.routers.traefik.entrypoints=web"
+      # HTTPS configuration (conflicts with HTTP configuration)
+      ##- "traefik.http.routers.traefik.entrypoints=websecure"
+      ##- "traefik.http.routers.traefik.tls.certresolver=dns"
+      ##- "traefik.http.routers.traefik.tls=true"
       - "traefik.http.routers.traefik.service=api@internal"
       - "traefik.http.routers.traefik.middlewares=traefik-auth"
       - "traefik.http.services.traefik.loadbalancer.server.port=8080"
       - "traefik.http.middlewares.traefik-auth.basicauth.users=${TRAEFIK_USERNAME}:${TRAEFIK_PASSWORD}"
+      # Use traefik proxy network
+      - "traefik.docker.network=traefik_proxy"
 
 networks:
   traefik_proxy:

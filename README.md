@@ -1,6 +1,6 @@
 # docker-compose
 
-Collection of my compose files for Docker
+Collection of my docker compose files.
 
 ## Stacks
 

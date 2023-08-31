@@ -25,4 +25,4 @@ http:
         users:
           # Username: service
           # Password: 123456
-          - "service:$apr1$5jcra9u0$bAFE6MkkTwv6m.UtIUbIe/"
+          - "service:$2y$05$1MtMQ9IjeTwM/fDPzGrW6OMRnliitltD2M0nM8gFS1hb2GVBn948S"
