@@ -36,9 +36,12 @@ services:
       # Redirect http to https
       ##- "--entrypoints.web.http.redirections.entryPoint.to=websecure"
       ##- "--entrypoints.web.http.redirections.entryPoint.scheme=https"
-      ##- "--entrypoints.web.http.redirections.entrypoint.permanent=true"      
+      ##- "--entrypoints.web.http.redirections.entrypoint.permanent=true"
       # Websecure middleware for HSTS, etc.
       - "--entrypoints.websecure.http.middlewares=secHeaders@file"
+      # Forward IP headers (if Traefik is behind another reverse proxy) to get the real client IP
+      ##- "--entryPoints.web.forwardedHeaders.trustedIPs=10.8.220.10"
+      ##- "--entryPoints.websecure.forwardedHeaders.trustedIPs=10.8.220.10"
       # Letsecnrypt http challenge
       ##- "--certificatesresolvers.http.acme.httpchallenge=true"
       ##- "--certificatesresolvers.http.acme.httpchallenge.entrypoint=web"

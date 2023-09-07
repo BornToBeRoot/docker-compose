@@ -8,9 +8,10 @@ This stack provides the following (configurable) features:
 
 - HTTP to HTTPS redirect (Port 80/tcp to 443/tcp)
 - Basic authentication for Traefik dashboard
-- Middleware for security headers (HSTS, etc.)
 - File provider for static routes via configuration files
 - Docker provider for dynamic routes via Docker labels
+- Forward IP headers if Traefik is behind a reverse proxy
+- Middleware for security headers (HSTS, etc.)
 - Letsencrypt certificate resolver with http challenge
 - Letsencrypt certificate resolver with dns challenge
 - Letsencrypt wildcard certificate (requires dns challenge)
