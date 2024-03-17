@@ -1,0 +1,13 @@
+version: "3"
+
+services:
+  mqtt:
+    container_name: "mosquitto"
+    image: "eclipse-mosquitto:2"
+    restart: always
+    ports:
+      - "1883:1883/tcp"
+      - "9001:9001/tcp"
+    volumes:
+      - "./data/mosquitto/config:/mosquitto/config"
+      - "./data/mosquitto/data:/mosquitto/data"
