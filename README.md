@@ -39,6 +39,29 @@ mkdir -p /opt/container
 git clone https://github.com/BornToBeRoot/docker-compose /opt/container
 ```
 
+## Update all stacks
+
+To automatically update all stacks, you can use the [`update_all_stacks.sh`](./update_all_stacks.sh) script that will iterate over all directories and pull the latest container images and restart the services.
+
+```bash
+# Copy script to /opt/scripts
+mkdir -p /opt/scripts
+cp ./update_all_containers.sh /opt/scripts/update_all_containers.sh
+
+# Make script executable
+chmod +x /opt/scripts/update_all_containers.sh
+
+# Create cronjob
+nano /etc/crontab
+```
+
+Add the following line to run the script every tuesday at 1:33:
+
+```plaintext
+
+33 1    * * 2   root    /opt/scripts/update_all_stacks.sh
+```
+
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

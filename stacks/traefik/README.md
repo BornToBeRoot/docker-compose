@@ -16,7 +16,7 @@
 
 ## Setup
 
-1. DNS `A` or `CNAME` record pointing to your server for traefik web interface
+1. DNS `A` or `CNAME` record pointing to your server for the traefik web interface
 
    Example:
 
