@@ -39,6 +39,14 @@ mkdir -p /opt/container
 git clone https://github.com/BornToBeRoot/docker-compose /opt/container
 ```
 
+> **NOTE:** The `.env` files may contain sensitive information and should be protected accordingly.
+>  
+> ```bash
+> # Restrict access
+> chmod 640 /opt/container/stacks/*/.env
+> chown root:root /opt/container/stacks/*/.env
+> ```
+
 ## Update all stacks
 
 To automatically update all stacks, you can use the [`update_all_stacks.sh`](./update_all_stacks.sh) script that will iterate over all directories and pull the latest container images and restart the services.
