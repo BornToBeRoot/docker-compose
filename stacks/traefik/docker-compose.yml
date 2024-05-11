@@ -79,7 +79,7 @@ services:
     ##- 192.168.178.1
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.traefik.rule=Host(`${TRAEFIK_URI}`)"
+      - "traefik.http.routers.traefik.rule=Host(`${TRAEFIK_FQDN}`)"
       # HTTP configuration
       - "traefik.http.routers.traefik.entrypoints=web"
       # HTTPS configuration (conflicts with HTTP configuration)
