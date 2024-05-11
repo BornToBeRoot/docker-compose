@@ -1,19 +1,25 @@
-version: "3"
+# Stack:       pihole_doh
+# Description: Pi-hole with DoH (cloudflared) behind Treafik
+# Author:      BornToBeRoot
+# Version:     1.0.0
+# Updated:     2024-05-11
+# Source:      https://github.com/BornToBeRoot/docker-compose
 
-# Pi-hole with cloudflared behind Treafik
+
+version: "3"
 
 # More info at
 # - https://hub.docker.com/r/visibilityspots/cloudflared
 services:
   cloudflared:
-    image: "visibilityspots/cloudflared:latest"
+    image: "${CLOUDFLARED_IMAGE}"
     container_name: "cloudflared"
     restart: always
     networks:
       dns_network:
         ipv4_address: 10.0.0.2
     environment:
-      UPSTREAM1: ${CLOUDFLARED_DNS_UPSTREAM1}    
+      UPSTREAM1: ${CLOUDFLARED_DNS_UPSTREAM1}
       UPSTREAM2: ${CLOUDFLARED_DNS_UPSTREAM2}
     dns:
       # Local is required in docker
@@ -26,9 +32,9 @@ services:
 # - https://github.com/pi-hole/docker-pi-hole/
 # - https://docs.pi-hole.net/
   pihole:
-    image: "pihole/pihole:latest"
+    image: "${PIHOLE_IMAGE}"
     container_name: "pihole"
-    restart: always
+    restart: always    
     networks:
       dns_network:
         ipv4_address: 10.0.0.3
@@ -37,15 +43,24 @@ services:
       - "53:53/tcp"
       - "53:53/udp"
     environment:
-      ServerIP: ${DOCKER_HOST_IP}
+      FTLCONF_LOCAL_IPV4: ${DOCKER_HOST_IP}
       TZ: ${PIHOLE_TIMEZONE}
       WEBPASSWORD: ${PIHOLE_PASSWORD}
       VIRTUAL_HOST: ${TRAEFIK_URI}
-      VIRTUAL_PORT: '80'      
       DNSMASQ_LISTENING: 'all'
-      # Connect to cloudflared
-      DNS1: '10.0.0.2#5054'
-      DNS2: 'no'
+      PIHOLE_DNS_: '10.0.0.2#5054'
+      DNSSEC: ${PIHOLE_DNSSEC_ENABLED}
+      DNS_BOGUS_PRIV: ${PIHOLE_DNS_BOGUS_PRIV_ENABLED}
+      DNS_FQDN_REQUIRED: ${PIHOLE_DNS_FQDN_REQUIRED_ENABLED}
+      REV_SERVER: ${PIHOLE_REV_SERVER_ENABLED}
+      REV_SERVER_DOMAIN: ${PIHOLE_REV_SERVER_DOMAIN}
+      REV_SERVER_TARGET: ${PIHOLE_REV_SERVER_TARGET}
+      REV_SERVER_CIDR: ${PIHOLE_REV_SERVER_CIDR}
+      QUERY_LOGGING: ${PIHOLE_QUERY_LOGGING_ENABLED}
+      FTLCONF_PRIVACYLEVEL: ${PIHOLE_PRIVACYLEVEL}
+      WEBTHEME: ${PIHOLE_WEBTHEME}
+      WEBUIBOXEDLAYOUT: ${PIHOLE_WEBUIBOXEDLAYOUT}
+      TEMPERATUREUNIT: ${PIHOLE_TEMPERATURE_UNIT}
     volumes:
        - "./data/etc/pihole/:/etc/pihole/"
        - "./data/etc/dnsmasq.d/:/etc/dnsmasq.d/"
