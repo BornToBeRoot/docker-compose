@@ -1,3 +1,10 @@
+# Stack:       mosquitto
+# Description: Mosquitto is an open source MQTT broker.
+# Author:      BornToBeRoot
+# Version:     1.0.0
+# Updated:     2024-05-11
+# Source:      https://github.com/BornToBeRoot/docker-compose
+
 version: "3"
 
 services:

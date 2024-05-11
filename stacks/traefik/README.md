@@ -4,8 +4,6 @@
 
 ## Features
 
-This stack provides the following (configurable) features:
-
 - HTTP to HTTPS redirect (Port 80/tcp to 443/tcp)
 - Basic authentication for Traefik dashboard
 - File provider for static routes via configuration files

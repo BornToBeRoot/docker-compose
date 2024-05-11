@@ -4,7 +4,8 @@
 
 ## Features
 
-Basic mosquitto MQTT broker without authentication for internal use (e.g. [Home Assistant](../homeassistant)).
+- Mosquitto MQTT broker without authentication
+  - e.g. for internal use with [Home Assistant](../homeassistant)
 
 ## Setup
 

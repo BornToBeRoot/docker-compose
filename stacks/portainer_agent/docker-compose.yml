@@ -1,0 +1,22 @@
+# Stack:       portainer_agent
+# Description: Portainer Agent is a lightweight, standalone agent that runs on your Docker hosts. It's used
+#              to manage containers, images, networks, and volumes using the Portainer web interface.
+# Author:      BornToBeRoot
+# Version:     1.0.0
+# Updated:     2024-05-11
+# Source:      https://github.com/BornToBeRoot/docker-compose
+
+version: "3"
+
+services:
+  agent:
+    image: "portainer/agent:latest"
+    container_name: "portainer_agent"
+    restart: unless-stopped
+    ports:
+      - "9001:9001"
+    networks:
+      - "default"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/lib/docker/volumes:/var/lib/docker/volumes

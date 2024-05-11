@@ -1,6 +1,6 @@
 # docker-compose
 
-Collection of my docker compose files for various services.
+Collection of my docker compose stacks for various services.
 
 ## Stacks
 
@@ -10,6 +10,7 @@ Collection of my docker compose files for various services.
 
 - **[pihole_doh][pihole_doh_readme]** - Pi-hole with DNS over HTTPS (DoH)
 - **[mosquitto][mosquitto_readme]** - Mosquitto MQTT broker
+- **[portainer_agent][portainer_agent_readme]** - Portainer Agent for remote management of Docker
 
 COMING SOON:
 
@@ -17,7 +18,7 @@ COMING SOON:
 - homer - Homer dashboard for your services
 - Nextcloud - Nextcloud self-hosted file sync and share with Collabora Online integration
 - portainer - Portainer management UI for Docker
-- portainer_agent - Portainer Agent for remote management of Docker
+- CUPS - CUPS print server
 
 ## Pre-requirments
 
@@ -42,6 +43,7 @@ git clone https://github.com/BornToBeRoot/docker-compose /opt/container
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-[pihole_doh_readme]: ./stacks/pihole_doh/
-[traefik_readme]: ./stacks/traefik/
 [mosquitto_readme]: ./stacks/mosquitto/
+[pihole_doh_readme]: ./stacks/pihole_doh/
+[portainer_agent_readme]: ./stacks/portainer_agent/
+[traefik_readme]: ./stacks/traefik/
