@@ -1,6 +1,6 @@
 # docker-compose
 
-Collection of my docker compose files.
+Collection of my docker compose files for various services.
 
 ## Stacks
 
@@ -18,6 +18,25 @@ COMING SOON:
 - Nextcloud - Nextcloud self-hosted file sync and share with Collabora Online integration
 - portainer - Portainer management UI for Docker
 - portainer_agent - Portainer Agent for remote management of Docker
+
+## Pre-requirments
+
+Using these stacks requires a server with Docker and Docker Compose installed.
+
+```bash
+# Ubuntu
+apt install docker docker-compose
+```
+
+Files are stored in `/opt/container` on the server (but can be changed, depending on your needs).
+
+```bash
+# Create directory
+mkdir -p /opt/container
+
+# Clone repository
+git clone https://github.com/BornToBeRoot/docker-compose /opt/container
+```
 
 ## License
 

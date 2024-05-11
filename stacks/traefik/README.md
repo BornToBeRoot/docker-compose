@@ -16,40 +16,31 @@ This stack provides the following (configurable) features:
 - Letsencrypt certificate resolver with dns challenge
 - Letsencrypt wildcard certificate (requires dns challenge)
 
-## Requirements
-
-- Server with Docker and Docker Compose installed
-
-  ```bash
-  # Ubuntu
-  apt install docker docker-compose
-  ```
-
-- DNS `A` or `CNAME` record(s) pointing to your server
-
-  Example:
-
-  ```plaintext
-  # A record
-  *.borntoberoot.net --> 192.168.178.10
-
-  # CNAME record
-  traefik.borntoberoot.net --> server01.borntoberoot.net
-  service.borntoberoot.net --> server01.borntoberoot.net
-  ```
-
 ## Setup
 
-1. Clone or download the repository to your server
-2. Copy the folder `stacks/traefik` to `/opt/container/traefik`
-3. Create a docker network for Traefik (used by other stacks/containers):
+1. DNS `A` or `CNAME` record pointing to your server for traefik web interface
+
+   Example:
+
+   ```plaintext
+   # A record
+   treafik.borntoberoot.net --> 192.168.178.10
+
+   # CNAME record
+   traefik.borntoberoot.net --> server01.borntoberoot.net
+   ```
+
+2. Create a docker network for Traefik (used by other stacks/containers):
 
    ```bash
    docker network create --driver=bridge --attachable --internal=false traefik_proxy
    ```
 
-4. Uncomment the feature sections (marked with ##) you want to use in `docker-compose.yml`
-5. Adjust the environment variables in `.env` to your needs
-6. Start the stack with `docker-compose up -d`
+3. Adjust the configuration based on your needs in the following files:
+
+   - `/opt/container/stacks/traefik/docker-compose.yml`
+   - `/opt/container/stacks/traefik/.env`
+
+4. Start the stack with `docker-compose up -d`
 
 [traefik_website]: https://traefik.io/

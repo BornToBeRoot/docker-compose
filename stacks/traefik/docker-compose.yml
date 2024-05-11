@@ -1,18 +1,15 @@
-version: "3"
+# Stack:       traefik 
+# Description: Traefik reverse proxy, load balancer and certificate manager.
+# Author:      BornToBeRoot
+# Version:     1.0.0
+# Updated:     2024-05-11
+# Source:      https://github.com/BornToBeRoot/docker-compose
 
-# Traefik reverse proxy, load balancer and certificate manager.
-#
-# Create a docker network for Traefik (used by other stacks/containers):
-# ~# docker network create --driver=bridge --attachable --internal=false traefik_proxy
-#
-# Uncomment the feature sections (marked with ##) you want to use. You also need to set the 
-# corresponding environment variables in the .env file.
-#
-# See README.md for more information.
+version: "3"
 
 services:
   traefik:
-    image: "traefik:latest"
+    image: "${TRAEFIK_IMAGE}"
     container_name: "traefik"
     restart: always
     security_opt:
@@ -68,8 +65,7 @@ services:
     # See https://docs.traefik.io/https/acme/#providers for more information
     ##environment:
     ##  - YOUR_PROVIDER_USERNAME=${LETSENCRYPT_DNS_USERNAME}
-    ##  - YOUR_PROVIDER_PASSWORD=${LETSENCRYPT_DNS_PASSWORD}
-    ##  - YOUR_PROVIDER_API_KEY=${LETSENCRYPT_DNS_API_KEY}
+    ##  - YOUR_PROVIDER_PASSWORD=${LETSENCRYPT_DNS_PASSWORD}    
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
@@ -88,7 +84,7 @@ services:
       - "traefik.http.routers.traefik.entrypoints=web"
       # HTTPS configuration (conflicts with HTTP configuration)
       ##- "traefik.http.routers.traefik.entrypoints=websecure"
-      ##- "traefik.http.routers.traefik.tls.certresolver=dns"
+      ##- "traefik.http.routers.traefik.tls.certresolver=${TRAEFIK_TLS_CERT_RESOLVER}"
       ##- "traefik.http.routers.traefik.tls=true"
       - "traefik.http.routers.traefik.service=api@internal"
       - "traefik.http.routers.traefik.middlewares=traefik-auth"
