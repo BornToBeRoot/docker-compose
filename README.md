@@ -22,11 +22,11 @@ COMING SOON:
 
 ## Pre-requirments
 
-Using these stacks requires a server with Docker and Docker Compose installed.
+Using these stacks requires a server with Docker and Docker Compose v2 installed.
 
 ```bash
-# Ubuntu
-apt install docker docker-compose
+# Ubuntu 24.04
+apt install docker docker-compose-v2
 ```
 
 Files are stored in `/opt/container` on the server (but can be changed, depending on your needs).

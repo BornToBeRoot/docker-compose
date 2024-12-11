@@ -6,8 +6,6 @@
 # Updated:     2024-05-11
 # Source:      https://github.com/BornToBeRoot/docker-compose
 
-version: "3"
-
 services:
   agent:
     image: "portainer/agent:latest"

@@ -5,9 +5,6 @@
 # Updated:     2024-05-11
 # Source:      https://github.com/BornToBeRoot/docker-compose
 
-
-version: "3"
-
 # More info at
 # - https://hub.docker.com/r/visibilityspots/cloudflared
 services:
@@ -88,5 +85,4 @@ networks:
       config:
         - subnet: 10.0.0.0/29
   traefik_proxy:
-    external:
-      name: traefik_proxy
+    external: true

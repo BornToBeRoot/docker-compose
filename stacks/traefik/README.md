@@ -39,6 +39,6 @@
    - `/opt/container/stacks/traefik/docker-compose.yml`
    - `/opt/container/stacks/traefik/.env`
 
-4. Start the stack with `docker-compose up -d`
+4. Start the stack with `docker compose up -d`
 
 [traefik_website]: https://traefik.io/

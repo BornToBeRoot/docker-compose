@@ -26,6 +26,6 @@
    - `/opt/container/stacks/mosquitto/docker-compose.yml`
    - `/opt/container/stacks/mosquitto/data/mosquitto/config/mosquitto.conf`
 
-3. Start the stack with `docker-compose up -d`
+3. Start the stack with `docker compose up -d`
 
 [mosquitto_website]: https://mosquitto.org/

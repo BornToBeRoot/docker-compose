@@ -8,6 +8,6 @@
 
 ## Setup
 
-1. Start the stack with `docker-compose up -d`
+1. Start the stack with `docker compose up -d`
 
 [portainer_agent_website]: https://github.com/portainer/agent

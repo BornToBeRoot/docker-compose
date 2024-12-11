@@ -50,7 +50,7 @@ systemctl restart systemd-resolved
    - `/opt/container/stacks/pihole_doh/docker-compose.yml`
    - `/opt/container/stacks/pihole_doh/.env`
 
-3. Start the stack with `docker-compose up -d`
+3. Start the stack with `docker compose up -d`
 
 [cloudflared_website]: https://hub.docker.com/r/visibilityspots/cloudflared
 [pihole_website]: https://pi-hole.net/
