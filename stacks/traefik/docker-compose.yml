@@ -45,7 +45,7 @@ services:
       # Letsencrypt dns challenge
       ##- "--certificatesresolvers.dns.acme.dnschallenge=true"
       ##- "--certificatesresolvers.dns.acme.dnschallenge.provider=${LETSENCRYPT_DNS_PROVIDER}"
-      ##- "--certificatesResolvers.dns.acme.dnschallenge.delaybeforecheck=${LETSENCRYPT_DNS_DELAY}"
+      ##- "--certificatesResolvers.dns.acme.dnschallenge.propagation.delayBeforeChecks=${LETSENCRYPT_DNS_DELAY}"
       ##- "--certificatesresolvers.dns.acme.dnschallenge.resolvers=${LETSENCRYPT_DNS_RESOLVER}"
       ##- "--certificatesresolvers.dns.acme.email=${LETSENCRYPT_EMAIL}"
       ##- "--certificatesresolvers.dns.acme.storage=/letsencrypt/acme_dns.json"
