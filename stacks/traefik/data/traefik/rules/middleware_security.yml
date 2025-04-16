@@ -23,7 +23,7 @@ http:
       headers:
         browserXssFilter: true
         contentTypeNosniff: true
-        frameDeny: true
+        ##frameDeny: true
         #HSTS Configuration
         stsIncludeSubdomains: true
         stsPreload: true
